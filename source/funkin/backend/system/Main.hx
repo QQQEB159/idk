@@ -38,8 +38,8 @@ class Main extends Sprite
 	
 	public static var framerateSprite:Framerate;
 
-	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels).
-	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels).
+	var gameWidth:Int = 1920; // Width of the game in pixels (might be less / more in actual pixels).
+	var gameHeight:Int = 1080; // Height of the game in pixels (might be less / more in actual pixels).
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 

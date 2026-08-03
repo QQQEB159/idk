@@ -304,6 +304,10 @@ class PlayState extends MusicBeatState
 	public var iconArray:Array<HealthIcon> = [];
 
 	/**
+	 * Camera for the UI (idk).
+	 */
+	public var camUI:HudCamera;
+	/**
 	 * Camera for the HUD (notes, misses).
 	 */
 	public var camHUD:HudCamera;
@@ -686,6 +690,8 @@ class PlayState extends MusicBeatState
 		(scripts = new ScriptPack("PlayState")).setParent(this);
 
 		camGame = camera;
+		FlxG.cameras.add(camUI = new HudCamera(), false);
+		camUI.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD = new HudCamera(), false);
 		camHUD.bgColor.alpha = 0;
 
