@@ -26,6 +26,9 @@ class Options
 	 */
 	public static var naughtyness:Bool = true;
 	public static var downscroll:Bool = false;
+	public static var middleScroll:Bool = false;
+	public static var strumUnderlayAlpha:Float = 0;
+	public static var flashingLights:Bool = true;
 	public static var ghostTapping:Bool = true;
 	public static var flashingMenu:Bool = true;
 	public static var camZoomOnBeat:Bool = true;
@@ -49,6 +52,7 @@ class Options
 	public static var language = "en"; // default to english, Flags.DEFAULT_LANGUAGE should not modify this
 	public static var streamedMusic:Bool = false;
 	public static var streamedVocals:Bool = false;
+	public static var mechanics:Bool = true;
 	public static var quality:Int = 1;
 	public static var allowConfigWarning:Bool = true;
 	#if MODCHARTING_FEATURES
@@ -134,6 +138,7 @@ class Options
 	public static var P1_DOWN:Array<FlxKey> = [S];
 	public static var P1_UP:Array<FlxKey> = [W];
 	public static var P1_RIGHT:Array<FlxKey> = [D];
+	public static var P1_DODGE:Array<FlxKey> = [SPACE];
 	public static var P1_ACCEPT:Array<FlxKey> = [ENTER];
 	public static var P1_BACK:Array<FlxKey> = [BACKSPACE];
 	public static var P1_PAUSE:Array<FlxKey> = [ENTER];
@@ -167,6 +172,7 @@ class Options
 	public static var P2_DOWN:Array<FlxKey> = [DOWN];
 	public static var P2_UP:Array<FlxKey> = [UP];
 	public static var P2_RIGHT:Array<FlxKey> = [RIGHT];
+	public static var P2_DODGE:Array<FlxKey> = [];
 	public static var P2_ACCEPT:Array<FlxKey> = [SPACE];
 	public static var P2_BACK:Array<FlxKey> = [ESCAPE];
 	public static var P2_PAUSE:Array<FlxKey> = [ESCAPE];
@@ -200,6 +206,7 @@ class Options
 	public static var SOLO_DOWN(get, null):Array<FlxKey>;
 	public static var SOLO_UP(get, null):Array<FlxKey>;
 	public static var SOLO_RIGHT(get, null):Array<FlxKey>;
+	public static var SOLO_DODGE(get, null):Array<FlxKey>;
 	public static var SOLO_ACCEPT(get, null):Array<FlxKey>;
 	public static var SOLO_BACK(get, null):Array<FlxKey>;
 	public static var SOLO_PAUSE(get, null):Array<FlxKey>;

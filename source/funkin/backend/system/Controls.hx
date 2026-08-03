@@ -41,6 +41,8 @@ enum abstract Action(String) to String from String {
 	var NOTE_LEFT_R = "note-left-release";
 	var NOTE_RIGHT_R = "note-right-release";
 	var NOTE_DOWN_R = "note-down-release";
+	
+	var DODGE = "dodge";
 
 	var ACCEPT = "accept";
 	var ACCEPT_HOLD = "accept-press";
@@ -97,6 +99,7 @@ enum Control
 	NOTE_LEFT;
 	NOTE_RIGHT;
 	NOTE_DOWN;
+	DODGE;
 	RESET;
 	ACCEPT;
 	BACK;
@@ -154,6 +157,8 @@ class Controls extends FlxActionSet
 	var _noteRightR = new FlxActionDigital(Action.NOTE_RIGHT_R);
 	var _noteDownR = new FlxActionDigital(Action.NOTE_DOWN_R);
 
+	var _dodge = new FlxActionDigital(Action.DODGE);
+	
 	var _accept = new FlxActionDigital(Action.ACCEPT);
 	var _acceptHold = new FlxActionDigital(Action.ACCEPT_HOLD);
 	var _acceptR = new FlxActionDigital(Action.ACCEPT_R);
@@ -266,6 +271,9 @@ class Controls extends FlxActionSet
 	inline function get_NOTE_DOWN_R() return _noteDownR.check() #if TOUCH_CONTROLS || mobileControlsJustReleased(MobileInputID.HITBOX_DOWN) #end;
 	inline function set_NOTE_DOWN_R(val) return @:privateAccess _noteDownR._checked = val;
 
+	public var DODGE(get, set):Bool;
+	inline function get_DODGE() return _dodge.check() #if TOUCH_CONTROLS || mobileControlsJustPressed(MobileInputID.EXTRA_1) #end;
+	
 	public var ACCEPT(get, set):Bool;
 	inline function get_ACCEPT() return _accept.check() #if TOUCH_CONTROLS || mobileControlsJustPressed(MobileInputID.A) #end;
 	inline function set_ACCEPT(val) return @:privateAccess _accept._checked = val;
@@ -394,6 +402,8 @@ class Controls extends FlxActionSet
 		add(_noteRightR);
 		add(_noteDownR);
 
+		add(_dodge);
+		
 		add(_accept);
 		add(_acceptHold);
 		add(_acceptR);
@@ -484,6 +494,7 @@ class Controls extends FlxActionSet
 			case NOTE_DOWN: _noteDown;
 			case NOTE_LEFT: _noteLeft;
 			case NOTE_RIGHT: _noteRight;
+			case DODGE: _dodge;
 			case ACCEPT: _accept;
 			case BACK: _back;
 			case PAUSE: _pause;
@@ -546,6 +557,8 @@ class Controls extends FlxActionSet
 				func(_down, PRESSED);
 				func(_downP, JUST_PRESSED);
 				func(_downR, JUST_RELEASED);
+			case DODGE:
+				func(_dodge, JUST_PRESSED);
 			case ACCEPT:
 				func(_accept, JUST_PRESSED);
 				func(_acceptHold, PRESSED);
@@ -709,6 +722,7 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, Options.SOLO_NOTE_DOWN);
 				inline bindKeys(Control.NOTE_LEFT, Options.SOLO_NOTE_LEFT);
 				inline bindKeys(Control.NOTE_RIGHT, Options.SOLO_NOTE_RIGHT);
+				inline bindKeys(Control.DODGE, Options.SOLO_DODGE);
 				inline bindKeys(Control.ACCEPT, Options.SOLO_ACCEPT);
 				inline bindKeys(Control.BACK, Options.SOLO_BACK);
 				inline bindKeys(Control.PAUSE, Options.SOLO_PAUSE);
@@ -727,6 +741,7 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, Options.P1_NOTE_DOWN);
 				inline bindKeys(Control.NOTE_LEFT, Options.P1_NOTE_LEFT);
 				inline bindKeys(Control.NOTE_RIGHT, Options.P1_NOTE_RIGHT);
+				inline bindKeys(Control.DODGE, Options.P1_DODGE);
 				inline bindKeys(Control.ACCEPT, Options.P1_ACCEPT);
 				inline bindKeys(Control.BACK, Options.P1_BACK);
 				inline bindKeys(Control.PAUSE, Options.P1_PAUSE);
@@ -745,6 +760,7 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, Options.P2_NOTE_DOWN);
 				inline bindKeys(Control.NOTE_LEFT, Options.P2_NOTE_LEFT);
 				inline bindKeys(Control.NOTE_RIGHT, Options.P2_NOTE_RIGHT);
+				inline bindKeys(Control.DODGE, Options.P2_DODGE);
 				inline bindKeys(Control.ACCEPT, Options.P2_ACCEPT);
 				inline bindKeys(Control.BACK, Options.P2_BACK);
 				inline bindKeys(Control.PAUSE, Options.P2_PAUSE);
@@ -809,6 +825,7 @@ class Controls extends FlxActionSet
 	{
 		#if !switch
 		addGamepadLiteral(id, [
+			Control.DODGE => [GUIDE],
 			Control.ACCEPT => [A],
 			Control.BACK => [B],
 			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
@@ -825,6 +842,7 @@ class Controls extends FlxActionSet
 			//Swap A and B for switch
 			Control.ACCEPT => [B],
 			Control.BACK => [A],
+			Control.DODGE => [GUIDE],
 			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
 			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
 			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],

@@ -60,6 +60,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 		return XMLImportedScriptInfo.prepareInfos(node, scripts, (infos) -> xmlImportedScripts.push(infos));
 
 	public var idleSuffix:String = "";
+	public var altSuffix:String = "";
 	public var stunned(default, set):Bool = false;
 
 	@:noCompletion var __stunnedTime:Float = 0;
@@ -158,9 +159,9 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 		if (event.cancelled) return;
 
 		if (isDanceLeftDanceRight)
-			playAnim(((danced = !danced) ? 'danceLeft' : 'danceRight') + idleSuffix, DANCE);
+			playAnim(((danced = !danced) ? 'danceLeft' : 'danceRight') + idleSuffix + altSuffix, DANCE);
 		else
-			playAnim('idle' + idleSuffix, DANCE);
+			playAnim('idle' + idleSuffix + altSuffix, DANCE);
 	}
 
 	public function tryDance() {
@@ -272,6 +273,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	 */
 	public function playSingAnim(direction:Int, suffix:String = "", Context:PlayAnimContext = SING, ?Force:Null<Bool> = null, Reversed:Bool = false, Frame:Int = 0)
 	{
+		suffix = suffix + altSuffix;
 		var event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);
 		scripts.call("onPlaySingAnim", [event]);
 		if (event.cancelled) return;
@@ -280,6 +282,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	}
 
 	public function playSingAnimUnsafe(direction:Int, suffix:String = "", Context:PlayAnimContext = SING, Force:Bool = true, Reversed:Bool = false, Frame:Int = 0) {
+		suffix = suffix + altSuffix;
 		var event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);
 		scripts.call("playSingAnimUnsafe", [event]);
 		if (event.cancelled) return;
