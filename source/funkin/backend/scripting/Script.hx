@@ -110,6 +110,10 @@ class Script extends FlxBasic implements IFlxDestroyable {
 			"TranslationUtil"	=> funkin.backend.utils.TranslationUtil,
 			"translate"		=> funkin.backend.utils.TranslationUtil.get,
 			#end
+			
+			"I18n"			=> jsoni18n.I18n,
+			"GameJolt"			=> gamejolt.GameJolt,
+			"GJRequest"			=> gamejolt.GJRequest,
 		];
 	}
 
