@@ -24,6 +24,8 @@
 		<lib name="hxcpp-debug-server" />
 
 		<lib name="nape-haxe4" />
+		<lib name="jsoni18n" />
+		<lib name="HaxeGJClient" />
 
 		<!-- For building lime -->
 		<lib global="true" name="hxp" /> <lib name="hxp" />
