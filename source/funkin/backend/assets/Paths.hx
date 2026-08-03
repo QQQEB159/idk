@@ -77,6 +77,9 @@ class Paths
 
 	public static inline function json(key:String, ?library:String)
 		return getPath('data/$key.json', library);
+		
+	public static inline function dialogue(path:String, ?library:String)
+		return getPath('songs/$path/dialogue.json', library);
 
 	public static inline function ps1(key:String, ?library:String)
 		return getPath('data/$key.ps1', library);
