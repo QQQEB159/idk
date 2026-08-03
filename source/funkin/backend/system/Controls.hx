@@ -273,6 +273,7 @@ class Controls extends FlxActionSet
 
 	public var DODGE(get, set):Bool;
 	inline function get_DODGE() return _dodge.check() #if TOUCH_CONTROLS || mobileControlsJustPressed(MobileInputID.EXTRA_1) #end;
+	inline function set_DODGE(val) return @:privateAccess _dodge._checked = val;
 	
 	public var ACCEPT(get, set):Bool;
 	inline function get_ACCEPT() return _accept.check() #if TOUCH_CONTROLS || mobileControlsJustPressed(MobileInputID.A) #end;
