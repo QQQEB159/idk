@@ -21,18 +21,20 @@ jobs:
         uses: actions/cache@v4.2.3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-ios
+          # key includes a hash of the dependency list so changing libs busts stale caches
+          key: cache-build-ios-${{ hashFiles('building/libs.xml') }}
           path: |
             .haxelib/
             export/release/ios/CodenameEngine/haxe/
           restore-keys: |
-            cache-build-ios
+            cache-build-ios-
       - name: Installing/Updating libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s --no-vscheck
       - name: Building the game
         run: haxelib run lime build ios -nosign
       - name: Clearing already existing cache
+        if: always()
         uses: actions/github-script@v6
         with:
           script: |
@@ -41,7 +43,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-ios") {
+              if (cache.key.startsWith("cache-build-ios")) {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -66,12 +68,13 @@ jobs:
           name: Codename Engine IOS
           path: export/release/ios/build/Release-iphoneos/*.ipa
       - name: Uploading new cache
+        if: success()
         uses: actions/cache@v4.2.3
         with:
           # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-ios
+          key: cache-build-ios-${{ hashFiles('building/libs.xml') }}
           path: |
             .haxelib/
             export/release/ios/CodenameEngine/haxe
           restore-keys: |
-            cache-build-ios
+            cache-build-ios-
