@@ -833,9 +833,10 @@ class PlayState extends MusicBeatState
 			var startingPos:FlxPoint = strumLine.strumPos != null ?
 				FlxPoint.get(strumLine.strumPos[0] == 0 ? strXPos : strumLine.strumPos[0], strumLine.strumPos[1]) :
 				FlxPoint.get(strXPos, this.strumLine.y);
+			var finalScale:Float = (strumLine.strumScale != null ? strumLine.strumScale : 1) * Options.playerStrumScale;
 			var strLine = new StrumLine(chars,
 				startingPos,
-				strumLine.strumScale == null ? 1 : strumLine.strumScale,
+				finalScale,
 				strumLine.type == 2 || (!coopMode && !((strumLine.type == 1 && !opponentMode) || (strumLine.type == 0 && opponentMode))),
 				strumLine.type != 1, coopMode ? ((strumLine.type == 1) != opponentMode ? controlsP1 : controlsP2) : controls,
 				strumLine.vocalsSuffix
