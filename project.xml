@@ -42,7 +42,7 @@
 	<window if="mac" allow-high-dpi="true" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" allow-high-dpi="true" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" />
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -195,8 +195,6 @@
 	<haxedef name="SOFTCODED_CLASSES" if="SOFTCODED_CLASSES" />
 	<haxedef name="USE_ADAPTED_ASSETS" if="USE_ADAPTED_ASSETS" />
 	<haxedef name="openfl_dpi_aware" if="openfl_dpi_aware" />
-	
-	<haxedef name="HXCPP_ANDROID_PLATFORM" value="26" if="android" />
 
 	<!-- Disable it for more concise compilation errors. -->
 	<haxedef name="message.reporting" value="pretty" />
