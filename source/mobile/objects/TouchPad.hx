@@ -149,7 +149,7 @@ class TouchPad extends MobileInputManager
 			button.label = new FlxSprite();
 			button.loadGraphic(buttonGraphicPath);
 			button.label.loadGraphic(buttonLabelGraphicPath);
-			button.scale.set(0.243, 0.243);
+			button.scale.set(0.243 * 1.5, 0.243 * 1.5);
 			button.label.antialiasing = button.antialiasing = Options.antialiasing;
 			button.color = Color;
 		}

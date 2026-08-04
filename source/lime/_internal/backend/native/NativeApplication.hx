@@ -61,6 +61,10 @@ class NativeApplication
 
 	public var handle:Dynamic;
 
+	#if android
+	private var deviceOrientationListener:OrientationChangeListener;
+	#end
+
 	private var pauseTimer:Int;
 	private var parent:Application;
 	private var toggleFullscreen:Bool;
@@ -82,6 +86,13 @@ class NativeApplication
 
 		#if (ios || android || tvos)
 		Sensor.registerSensor(SensorType.ACCELEROMETER, 0);
+		#end
+
+		#if android
+		var setDeviceOrientationListener = JNI.createStaticMethod("org/haxe/lime/GameActivity", "setDeviceOrientationListener",
+			"(Lorg/haxe/lime/HaxeObject;)V");
+		deviceOrientationListener = new OrientationChangeListener(handleJNIOrientationEvent);
+		setDeviceOrientationListener(deviceOrientationListener);
 		#end
 
 		#if (!macro && lime_cffi)
@@ -240,7 +251,9 @@ class NativeApplication
 				var joystick = Joystick.devices.get(joystickEventInfo.id);
 				if (joystick != null) joystick.onHatMove.dispatch(joystickEventInfo.index, joystickEventInfo.eventValue);
 
-			case TRACKBALL_MOVE: // I guess this was just removed ??
+			case TRACKBALL_MOVE:
+				var joystick = Joystick.devices.get(joystickEventInfo.id);
+				if (joystick != null) joystick.onTrackballMove.dispatch(joystickEventInfo.index, joystickEventInfo.x, joystickEventInfo.y);
 
 			case BUTTON_DOWN:
 				var joystick = Joystick.devices.get(joystickEventInfo.id);
@@ -268,17 +281,14 @@ class NativeApplication
 			var int32:Float = keyEventInfo.keyCode;
 			var keyCode:KeyCode = Std.int(int32);
 			var modifier:KeyModifier = keyEventInfo.modifier;
-			var timestamp = keyEventInfo.timestamp;
 
 			switch (type)
 			{
 				case KEY_DOWN:
 					window.onKeyDown.dispatch(keyCode, modifier);
-					window.onKeyDownPrecise.dispatch(keyCode, modifier, timestamp);
 
 				case KEY_UP:
 					window.onKeyUp.dispatch(keyCode, modifier);
-					window.onKeyUpPrecise.dispatch(keyCode, modifier, timestamp);
 			}
 
 			#if (windows || linux)
@@ -303,7 +313,7 @@ class NativeApplication
 			}
 
 			#if rpi
-			if (keyCode == ESCAPE && modifier.ctrlKey && type == KEY_DOWN)
+			if (keyCode == ESCAPE && modifier == KeyModifier.NONE && type == KEY_UP && !window.onKeyUp.canceled)
 			{
 				System.exit(0);
 			}
@@ -448,7 +458,7 @@ class NativeApplication
 
 	private function handleSensorEvent():Void
 	{
-		var sensor = Sensor.__sensorByID.get(sensorEventInfo.id);
+		var sensor = Sensor.sensorByID.get(sensorEventInfo.id);
 
 		if (sensor != null)
 		{
@@ -796,26 +806,22 @@ class NativeApplication
 
 @:keep /*private*/ class KeyEventInfo
 {
-	public var keyCode: Float;
+	public var keyCode:Float;
 	public var modifier:Int;
 	public var type:KeyEventType;
 	public var windowID:Int;
 
-	// TODO: This should probably be an Int64
-	public var timestamp:Int = 0;
-
-	public function new(type:KeyEventType = null, windowID:Int = 0, keyCode: Float = 0, modifier:Int = 0, timestamp:Int = 0)
+	public function new(type:KeyEventType = null, windowID:Int = 0, keyCode:Float = 0, modifier:Int = 0)
 	{
 		this.type = type;
 		this.windowID = windowID;
 		this.keyCode = keyCode;
 		this.modifier = modifier;
-		this.timestamp = timestamp;
 	}
 
 	public function clone():KeyEventInfo
 	{
-		return new KeyEventInfo(type, windowID, keyCode, modifier, timestamp);
+		return new KeyEventInfo(type, windowID, keyCode, modifier);
 	}
 }
 
@@ -1059,7 +1065,6 @@ private class OrientationChangeListener #if (android && !macro) implements JNISa
 	#if (android && !macro)
 	@:runOnMainThread
 	#end
-	@:keep
 	public function onOrientationChanged(orientation:Int):Void
 	{
 		callback(orientation);
