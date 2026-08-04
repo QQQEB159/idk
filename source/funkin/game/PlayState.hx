@@ -52,6 +52,10 @@ class PlayState extends MusicBeatState
 	 */
 	public static var SONG:ChartData;
 	/**
+	 * idk..
+	 */
+	public static var isGauntletMode:Bool = false;
+	/**
 	 * Whenever the song is being played in Story Mode.
 	 */
 	public static var isStoryMode:Bool = false;
