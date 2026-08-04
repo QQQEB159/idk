@@ -12,6 +12,7 @@ import lime.system.Clipboard;
 import lime.system.Display;
 import lime.system.DisplayMode;
 import lime.system.JNI;
+import lime.system.Orientation;
 import lime.system.Sensor;
 import lime.system.SensorType;
 import lime.system.System;
@@ -49,6 +50,7 @@ class NativeApplication
 	private var gamepadEventInfo = new GamepadEventInfo();
 	private var joystickEventInfo = new JoystickEventInfo();
 	private var keyEventInfo = new KeyEventInfo();
+	private var orientationEventInfo = new OrientationEventInfo();
 	private var mouseEventInfo = new MouseEventInfo();
 	private var renderEventInfo = new RenderEventInfo(RENDER);
 	private var sensorEventInfo = new SensorEventInfo();
@@ -116,6 +118,9 @@ class NativeApplication
 		NativeCFFI.lime_text_event_manager_register(handleTextEvent, textEventInfo);
 		NativeCFFI.lime_touch_event_manager_register(handleTouchEvent, touchEventInfo);
 		NativeCFFI.lime_window_event_manager_register(handleWindowEvent, windowEventInfo);
+		#if (ios || android)
+		NativeCFFI.lime_orientation_event_manager_register(handleOrientationEvent, orientationEventInfo);
+		#end
 		#if (ios || android || tvos)
 		NativeCFFI.lime_sensor_event_manager_register(handleSensorEvent, sensorEventInfo);
 		#end
@@ -161,6 +166,15 @@ class NativeApplication
 
 		#if (!macro && lime_cffi)
 		NativeCFFI.lime_application_quit(handle);
+		#end
+	}
+
+	public function getDeviceOrientation():Orientation
+	{
+		#if (!macro && lime_cffi)
+		return cast NativeCFFI.lime_system_get_device_orientation();
+		#else
+		return UNKNOWN;
 		#end
 	}
 
@@ -254,14 +268,17 @@ class NativeApplication
 			var int32:Float = keyEventInfo.keyCode;
 			var keyCode:KeyCode = Std.int(int32);
 			var modifier:KeyModifier = keyEventInfo.modifier;
+			var timestamp = keyEventInfo.timestamp;
 
 			switch (type)
 			{
 				case KEY_DOWN:
 					window.onKeyDown.dispatch(keyCode, modifier);
+					window.onKeyDownPrecise.dispatch(keyCode, modifier, timestamp);
 
 				case KEY_UP:
 					window.onKeyUp.dispatch(keyCode, modifier);
+					window.onKeyUpPrecise.dispatch(keyCode, modifier, timestamp);
 			}
 
 			#if (windows || linux)
@@ -286,7 +303,7 @@ class NativeApplication
 			}
 
 			#if rpi
-			if (keyCode == ESCAPE && modifier == KeyModifier.NONE && type == KEY_UP && !window.onKeyUp.canceled)
+			if (keyCode == ESCAPE && modifier.ctrlKey && type == KEY_DOWN)
 			{
 				System.exit(0);
 			}
@@ -353,6 +370,27 @@ class NativeApplication
 		}
 	}
 
+	private function handleOrientationEvent():Void
+	{
+		var orientation:Orientation = cast orientationEventInfo.orientation;
+		var display = orientationEventInfo.display;
+		switch (orientationEventInfo.type)
+		{
+			case DISPLAY_ORIENTATION_CHANGE:
+				parent.onDisplayOrientationChange.dispatch(display, orientation);
+			case DEVICE_ORIENTATION_CHANGE:
+				parent.onDeviceOrientationChange.dispatch(orientation);
+		}
+	}
+
+	#if android
+	private function handleJNIOrientationEvent(newOrientation:Int):Void
+	{
+		var orientation:Orientation = cast newOrientation;
+		parent.onDeviceOrientationChange.dispatch(orientation);
+	}
+	#end
+
 	private function handleRenderEvent():Void
 	{
 		// TODO: Allow windows to render independently
@@ -410,7 +448,7 @@ class NativeApplication
 
 	private function handleSensorEvent():Void
 	{
-		var sensor = Sensor.sensorByID.get(sensorEventInfo.id);
+		var sensor = Sensor.__sensorByID.get(sensorEventInfo.id);
 
 		if (sensor != null)
 		{
@@ -763,17 +801,21 @@ class NativeApplication
 	public var type:KeyEventType;
 	public var windowID:Int;
 
-	public function new(type:KeyEventType = null, windowID:Int = 0, keyCode: Float = 0, modifier:Int = 0)
+	// TODO: This should probably be an Int64
+	public var timestamp:Int = 0;
+
+	public function new(type:KeyEventType = null, windowID:Int = 0, keyCode: Float = 0, modifier:Int = 0, timestamp:Int = 0)
 	{
 		this.type = type;
 		this.windowID = windowID;
 		this.keyCode = keyCode;
 		this.modifier = modifier;
+		this.timestamp = timestamp;
 	}
 
 	public function clone():KeyEventInfo
 	{
-		return new KeyEventInfo(type, windowID, keyCode, modifier);
+		return new KeyEventInfo(type, windowID, keyCode, modifier, timestamp);
 	}
 }
 
@@ -978,4 +1020,48 @@ class NativeApplication
 	var WINDOW_RESTORE = 12;
 	var WINDOW_SHOW = 13;
 	var WINDOW_HIDE = 14;
+}
+
+@:keep /*private*/ class OrientationEventInfo
+{
+	public var orientation:Int;
+	public var display:Int;
+	public var type:OrientationEventType;
+
+	public function new(type:OrientationEventType = null, orientation:Int = 0, display:Int = -1)
+	{
+		this.type = type;
+		this.orientation = orientation;
+		this.display = display;
+	}
+
+	public function clone():OrientationEventInfo
+	{
+		return new OrientationEventInfo(type, orientation, display);
+	}
+}
+
+#if (haxe_ver >= 4.0) private enum #else @:enum private #end abstract OrientationEventType(Int)
+{
+	var DISPLAY_ORIENTATION_CHANGE = 0;
+	var DEVICE_ORIENTATION_CHANGE = 1;
+}
+
+private class OrientationChangeListener #if (android && !macro) implements JNISafety #end
+{
+	private var callback:Int->Void;
+
+	public function new(callback:Int->Void)
+	{
+		this.callback = callback;
+	}
+
+	#if (android && !macro)
+	@:runOnMainThread
+	#end
+	@:keep
+	public function onOrientationChanged(orientation:Int):Void
+	{
+		callback(orientation);
+	}
 }

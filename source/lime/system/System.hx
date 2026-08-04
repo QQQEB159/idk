@@ -37,7 +37,7 @@ import sys.io.Process;
 @:access(lime.system.DisplayMode)
 #if (cpp && windows && !HXCPP_MINGW && !lime_disable_gpu_hint)
 @:cppFileCode('
-#if defined(HX_WINDOWS) && !defined(__MINGW32__)
+#if defined(HX_WINDOWS)
 extern "C" {
 	_declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
 	_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
@@ -397,9 +397,6 @@ class System
 			Browser.window.open(url, target);
 			#elseif flash
 			Lib.getURL(new URLRequest(url), target);
-			#elseif android
-			var openURL = JNI.createStaticMethod("org/haxe/lime/GameActivity", "openURL", "(Ljava/lang/String;Ljava/lang/String;)V");
-			openURL(url, target);
 			#elseif (lime_cffi && !macro)
 			NativeCFFI.lime_system_open_url(url, target);
 			#end

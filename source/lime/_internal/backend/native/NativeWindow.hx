@@ -1,5 +1,6 @@
 package lime._internal.backend.native;
 
+import lime.ui.WindowVSyncMode;
 import haxe.io.Bytes;
 import lime._internal.backend.native.NativeCFFI;
 import lime.app.Application;
@@ -119,7 +120,6 @@ class NativeWindow
 			parent.__x = NativeCFFI.lime_window_get_x(handle);
 			parent.__y = NativeCFFI.lime_window_get_y(handle);
 			parent.__hidden = (Reflect.hasField(attributes, "hidden") && attributes.hidden);
-			parent.__vsync = contextAttributes.vsync;
 			parent.id = NativeCFFI.lime_window_get_id(handle);
 		}
 
@@ -304,6 +304,44 @@ class NativeWindow
 		return mouseLock;
 	}
 
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			return NativeCFFI.lime_window_set_vsync_mode(handle, mode);
+			#end
+		}
+
+		return false;
+	}
+
+	public function getNativeHandle():Dynamic
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			return NativeCFFI.lime_window_get_handle(handle);
+			#end
+		}
+
+		return null;
+	}
+
+	/* outdated
+	public function setVSync(value:Bool):Bool
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			return NativeCFFI.lime_window_set_vsync(handle, value);
+			#end
+		}
+
+		return value;
+	}
+	*/
+
 	public function getTextInputEnabled():Bool
 	{
 		if (handle != null)
@@ -482,18 +520,6 @@ class NativeWindow
 		{
 			#if (!macro && lime_cffi)
 			NativeCFFI.lime_window_set_borderless(handle, value);
-			#end
-		}
-
-		return value;
-	}
-
-	public function setVSync(value:Bool):Bool
-	{
-		if (handle != null)
-		{
-			#if (!macro && lime_cffi)
-			NativeCFFI.lime_window_set_vsync(handle, value);
 			#end
 		}
 
