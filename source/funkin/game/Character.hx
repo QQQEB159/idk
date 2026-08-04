@@ -266,14 +266,14 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 
 	public var singAnims = ["singLEFT", "singDOWN", "singUP", "singRIGHT"];
 	public inline function getSingAnim(direction:Int, suffix:String = ""):String
-		return singAnims[direction % singAnims.length] + suffix;
+		return singAnims[direction % singAnims.length] + suffix + altSuffix;
 
 	/**
 	 * Like `playSingAnimUnsafe` but checks if the character has the animation with the suffix part, otherwise it plays the animation without the suffix part.
 	 */
 	public function playSingAnim(direction:Int, suffix:String = "", Context:PlayAnimContext = SING, ?Force:Null<Bool> = null, Reversed:Bool = false, Frame:Int = 0)
 	{
-		suffix = suffix + altSuffix;
+		//suffix = suffix + altSuffix;
 		var event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);
 		scripts.call("onPlaySingAnim", [event]);
 		if (event.cancelled) return;
@@ -282,7 +282,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	}
 
 	public function playSingAnimUnsafe(direction:Int, suffix:String = "", Context:PlayAnimContext = SING, Force:Bool = true, Reversed:Bool = false, Frame:Int = 0) {
-		suffix = suffix + altSuffix;
+		//suffix = suffix + altSuffix;
 		var event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);
 		scripts.call("playSingAnimUnsafe", [event]);
 		if (event.cancelled) return;

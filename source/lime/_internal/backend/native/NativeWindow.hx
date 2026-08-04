@@ -119,6 +119,7 @@ class NativeWindow
 			parent.__x = NativeCFFI.lime_window_get_x(handle);
 			parent.__y = NativeCFFI.lime_window_get_y(handle);
 			parent.__hidden = (Reflect.hasField(attributes, "hidden") && attributes.hidden);
+			parent.__vsync = contextAttributes.vsync;
 			parent.id = NativeCFFI.lime_window_get_id(handle);
 		}
 
@@ -139,7 +140,6 @@ class NativeWindow
 				var gl = new NativeOpenGLRenderContext();
 
 				useHardware = true;
-				contextAttributes.hardware = true;
 
 				#if lime_opengl
 				context.gl = gl;
@@ -163,7 +163,6 @@ class NativeWindow
 
 			default:
 				useHardware = false;
-				contextAttributes.hardware = false;
 
 				#if lime_cairo
 				context.cairo = cairo;
@@ -303,18 +302,6 @@ class NativeWindow
 		}
 
 		return mouseLock;
-	}
-
-	public function getOpacity():Float
-	{
-		if (handle != null)
-		{
-			#if (!macro && lime_cffi)
-			return NativeCFFI.lime_window_get_opacity(handle);
-			#end
-		}
-
-		return 1.0;
 	}
 
 	public function getTextInputEnabled():Bool
@@ -467,6 +454,7 @@ class NativeWindow
 		}
 	}
 
+	#if (lime >= "8.1.0")
 	public function setMinSize(width:Int, height:Int):Void
 	{
 		if (handle != null)
@@ -486,6 +474,7 @@ class NativeWindow
 			#end
 		}
 	}
+	#end
 
 	public function setBorderless(value:Bool):Bool
 	{
@@ -493,6 +482,18 @@ class NativeWindow
 		{
 			#if (!macro && lime_cffi)
 			NativeCFFI.lime_window_set_borderless(handle, value);
+			#end
+		}
+
+		return value;
+	}
+
+	public function setVSync(value:Bool):Bool
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			NativeCFFI.lime_window_set_vsync(handle, value);
 			#end
 		}
 
@@ -666,16 +667,6 @@ class NativeWindow
 		return value;
 	}
 
-	public function setOpacity(value:Float):Void
-	{
-		if (handle != null)
-		{
-			#if (!macro && lime_cffi)
-			NativeCFFI.lime_window_set_opacity(handle, value);
-			#end
-		}
-	}
-
 	public function setResizable(value:Bool):Bool
 	{
 		if (handle != null)
@@ -705,6 +696,7 @@ class NativeWindow
 		return value;
 	}
 
+	#if (lime >= "8.1.0")
 	public function setVisible(value:Bool):Bool
 	{
 		if (handle != null)
@@ -717,17 +709,28 @@ class NativeWindow
 		return value;
 	}
 
-	public function setVSync(value:Bool):Bool
+	public function getOpacity():Float
 	{
 		if (handle != null)
 		{
 			#if (!macro && lime_cffi)
-			return NativeCFFI.lime_window_set_vsync(handle, value);
+			return NativeCFFI.lime_window_get_opacity(handle);
 			#end
 		}
 
-		return value;
+		return 1.0;
 	}
+
+	public function setOpacity(value:Float):Void
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			NativeCFFI.lime_window_set_opacity(handle, value);
+			#end
+		}
+	}
+	#end
 
 	public function warpMouse(x:Int, y:Int):Void
 	{

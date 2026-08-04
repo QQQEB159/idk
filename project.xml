@@ -195,6 +195,8 @@
 	<haxedef name="SOFTCODED_CLASSES" if="SOFTCODED_CLASSES" />
 	<haxedef name="USE_ADAPTED_ASSETS" if="USE_ADAPTED_ASSETS" />
 	<haxedef name="openfl_dpi_aware" if="openfl_dpi_aware" />
+	
+	<haxedef name="HXCPP_ANDROID_PLATFORM" value="26" if="android" />
 
 	<!-- Disable it for more concise compilation errors. -->
 	<haxedef name="message.reporting" value="pretty" />
@@ -253,7 +255,7 @@
 	<!-- Do whatever you want I'm tired uninstall and install everytime -->
 	<certificate path="key.keystore" password="codenameengine" alias="cneport" alias-password="codenameengine" if="android" unless="debug" />
 
-	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+	<haxedef name="SHARE_FILES" if="mobile" />
 
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
