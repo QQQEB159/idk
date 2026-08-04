@@ -31,7 +31,7 @@
 		<lib global="true" name="hxp" /> <lib name="hxp" />
 		<lib global="true" name="format" /> <lib name="format" />
 
-		<git name="hxcpp" url="https://github.com/ShadowEngineTeam/hxcpp" />
+		<git name="hxcpp" url="https://github.com/ShadowEngineTeam/hxcpp" ref="c4a5d559af9c962fd7ef29351fa6e479e3479f86" />
 
 		<git name="flixel-animate" url="https://github.com/CodenameCrew/cne-flixel-animate/" ref="old" skipDeps="true"/>
 	</if>
