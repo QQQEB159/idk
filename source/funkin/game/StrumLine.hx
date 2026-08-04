@@ -8,7 +8,6 @@ import funkin.backend.chart.ChartData;
 import funkin.backend.scripting.events.note.*;
 import funkin.backend.system.Conductor;
 import funkin.backend.system.Controls;
-import funkin.options.Options;
 
 /**
  * Group of strums, that contains the strums and notes.
@@ -108,7 +107,7 @@ class StrumLine extends FlxTypedGroup<Strum> {
 	 * If called after generate, the strums wont be scaled.
 	 * You can only change it in the Charter.
 	**/
-	public var strumScale:Float = Options.playerStrumScale;
+	public var strumScale:Float = 1;
 
 	public function new(characters:Array<Character>, startingPos:FlxPoint, strumScale:Float, cpu:Bool = false, opponentSide:Bool = true, ?controls:Controls, ?vocalPrefix:String = "") {
 		super();
