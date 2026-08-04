@@ -745,9 +745,10 @@ class PlayState extends MusicBeatState
 
 		if (!chartingMode || Options.charterEnablePlaytestScripts) {
 			switch(SONG.meta.name) {
-				// case "":
-					// ADD YOUR HARDCODED SCRIPTS HERE!
+				case "Meguca":
+			        addScript(Paths.script("songs/UIs/MegucaUI"));
 				default:
+					addScript(Paths.script("songs/UIs/Standard"));
 					var normal = 'songs/${SONG.meta.name}/scripts';
 					var scriptsFolders:Array<String> = [normal, normal + '/$difficulty/', 'data/charts/', 'songs/'];
 
