@@ -755,30 +755,11 @@ class PlayState extends MusicBeatState
 			switch(SONG.meta.name) {
 				case "Meguca":
 			        addScript(Paths.script("songs/UIs/MegucaUI"));
-			        var normal = 'songs/${SONG.meta.name}/scripts';
-					var scriptsFolders:Array<String> = [normal, normal + '/$difficulty/', 'data/charts/', 'songs/'];
-
-					for (folder in scriptsFolders) {
-						for (file in Paths.getFolderContent(folder, true, fromMods ? MODS : BOTH)) {
-							if (folder == 'data/charts/')
-								Logs.warn('data/charts/ is deprecated and will be removed in the future. Please move script $file to songs/', DARKYELLOW, "PlayState");
-
-							addScript(file);
-						}
-					}
-
-					var songEvents:Array<String> = [];
-					for (event in SONG.events) songEvents.pushOnce(event.name);
-
-					for (file in Paths.getFolderContent('data/events/', true, fromMods ? MODS : BOTH)) {
-						var fileName:String = CoolUtil.getFilename(file);
-						if (EventsData.eventsList.contains(fileName) && songEvents.contains(fileName)) {
-							addScript(file);
-						}
-					}
 				default:
 					addScript(Paths.script("songs/UIs/Standard"));
-					var normal = 'songs/${SONG.meta.name}/scripts';
+			}
+			
+			var normal = 'songs/${SONG.meta.name}/scripts';
 					var scriptsFolders:Array<String> = [normal, normal + '/$difficulty/', 'data/charts/', 'songs/'];
 
 					for (folder in scriptsFolders) {
@@ -799,7 +780,6 @@ class PlayState extends MusicBeatState
 							addScript(file);
 						}
 					}
-			}
 		}
 
 		add(comboGroup);
