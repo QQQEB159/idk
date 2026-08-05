@@ -753,7 +753,7 @@ class PlayState extends MusicBeatState
 
 		if (!chartingMode || Options.charterEnablePlaytestScripts) {
 			switch(SONG.meta.name) {
-				case "Meguca":
+				case "meguca":
 			        addScript(Paths.script("songs/UIs/MegucaUI"));
 				default:
 					addScript(Paths.script("songs/UIs/Standard"));
@@ -1829,7 +1829,7 @@ class PlayState extends MusicBeatState
 		#if TOUCH_CONTROLS
 		hitbox.visible = false;
 		#end
-		if (isStoryMode) {
+		if (isStoryMode || isGauntletMode) {
 			campaignScore += songScore;
 			campaignMisses += misses;
 			campaignAccuracyTotal += accuracy;
