@@ -25,7 +25,7 @@
 
 		<lib name="nape-haxe4" />
 		<lib name="jsoni18n" />
-		<git name="HaxeGJClient" url="https://github.com/QQQEB159/HaxeGJClient" skipDeps="true" />
+		<git name="HaxeGJClient" url="https://github.com/GamerPablito/HaxeGJClient" skipDeps="true" />
 
 		<!-- For building lime -->
 		<lib global="true" name="hxp" /> <lib name="hxp" />
