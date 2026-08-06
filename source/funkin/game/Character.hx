@@ -65,6 +65,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 
 	@:noCompletion var __stunnedTime:Float = 0;
 	@:noCompletion var __lockAnimThisFrame:Bool = false;
+	@:noCompletion var __lastPlayedSingAnim:String = null;
 
 	@:noCompletion var __switchAnims:Bool = true;
 
@@ -171,7 +172,10 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 			return;
 
 		switch (lastAnimContext) {
-			case SING | MISS:
+			case SING:
+				if (lastHit + (Conductor.stepCrochet * holdTime) < Conductor.songPosition)
+					if (!tryPlaySingEnd()) dance();
+			case MISS:
 				if (lastHit + (Conductor.stepCrochet * holdTime) < Conductor.songPosition)
 					dance();
 			case DANCE:
@@ -288,8 +292,23 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 		if (event.cancelled) return;
 
 		playAnim(event.animName, event.force, event.context, event.reversed, event.frame);
+		__lastPlayedSingAnim = event.animName;
 	}
 
+	function tryPlaySingEnd():Bool 
+	{
+        if (__lastPlayedSingAnim == null) return false;
+
+        var endAnim = __lastPlayedSingAnim + "-end";
+        if (hasAnimation(endAnim))
+        {
+            playAnim(endAnim, true, LOCK, 24);
+            return true;
+        }
+        
+        return false;
+    }
+	
 	public override function playAnim(AnimName:String, ?Force:Bool, Context:PlayAnimContext = NONE, Reversed:Bool = false, Frame:Int = 0) {
 		var event = EventManager.get(PlayAnimEvent).recycle(AnimName, Force, Reversed, Frame, Context);
 		scripts.call("onPlayAnim", [event]);
