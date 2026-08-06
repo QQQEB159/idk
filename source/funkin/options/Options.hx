@@ -254,7 +254,7 @@ class Options
 
 	public static function applySettings() {
 		applyKeybinds();
-		applyQuality();
+		//applyQuality();
 
 		FlxG.sound.defaultMusicGroup.volume = volumeMusic;
 		FlxG.autoPause = autoPause;
