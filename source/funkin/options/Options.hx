@@ -68,6 +68,7 @@ class Options
 	 */
 	#if mobile
 	public static var screenTimeOut:Bool = false;
+	#end
 	#if android public static var storageType:String = "EXTERNAL_DATA";
 	#end
 	public static var extraHints:String = "NONE";
