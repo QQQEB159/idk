@@ -2,18 +2,18 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 	<app
-		title="Friday Night Funkin' - Codename Engine" main="funkin.backend.system.Main"
-		file="CodenameEngine" packageName="com.yoshman29.codenameengine"
-		package="com.yoshman29.codenameengine"
-		version="1.0.1" company="Yoshman29" />
+		title="Holy Quintet" main="funkin.backend.system.Main"
+		file="HolyQuintet" packageName="com.funny.holyquintet"
+		package="com.funny.holyquintet"
+		version="1.0.5" company="Yoshman29" />
 
 	<!--
 		CHANGE THE SAVE PATH & NAME FOR YOUR MOD HERE!
 	-->
-	<haxedef name="SAVE_PATH" value="CodenameEngine"/>
+	<haxedef name="SAVE_PATH" value="HolyQuintet"/>
 	<haxedef name="SAVE_NAME" value="save-default"/>
 
-	<haxedef name="SAVE_OPTIONS_PATH" value="CodenameEngine"/>
+	<haxedef name="SAVE_OPTIONS_PATH" value="HolyQuintet"/>
 	<haxedef name="SAVE_OPTIONS_NAME" value="options"/>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
@@ -254,6 +254,7 @@
 	<certificate path="key.keystore" password="codenameengine" alias="cneport" alias-password="codenameengine" if="android" unless="debug" />
 
 	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+	<haxedef name="openfl_assets" />
 
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />

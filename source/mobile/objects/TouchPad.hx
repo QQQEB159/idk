@@ -113,6 +113,7 @@ class TouchPad extends MobileInputManager
 
 			button.antialiasing = Options.antialiasing;
 			button.frames = FlxTileFrames.fromGraphic(frames, FlxPoint.get(Std.int(frames.width / 2), frames.height));
+			button.scale.set(1.5, 1.5);
 
 			if (Color != -1)
 				button.color = Color;

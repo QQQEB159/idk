@@ -37,13 +37,13 @@ class MainState extends FlxState {
 		if (!initiated)
 		{
 			Main.loadGameSettings();
-			#if mobile
+			/*#if mobile
 			if (!CopyState.checkExistingFiles())
 			{
 				FlxG.switchState(new CopyState());
 				return;
 			}
-			#end
+			#end*/
 		}
 		else
 		{

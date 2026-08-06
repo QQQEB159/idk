@@ -354,7 +354,11 @@ class Sound extends EventDispatcher
 	public static function fromFile(path:String):Sound
 	{
 		#if lime
+		#if openfl_assets
+		return fromAudioBuffer(lime.utils.Assets.getAudioBuffer(path));
+		#else
 		return fromAudioBuffer(AudioBuffer.fromFile(path));
+		#end
 		#else
 		return null;
 		#end

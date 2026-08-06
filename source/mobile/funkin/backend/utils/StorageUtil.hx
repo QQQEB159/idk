@@ -111,8 +111,8 @@ class StorageUtil
 enum abstract StorageType(String) from String to String
 {
 	final forcedPath = '/storage/emulated/0/';
-	final packageNameLocal = 'com.yoshman29.codenameengine';
-	final fileLocal = 'CodenameEngine';
+	final packageNameLocal = 'com.funny.holyquintet';
+	final fileLocal = 'HolyQuintet';
 
 	var EXTERNAL_DATA = "EXTERNAL_DATA";
 	var EXTERNAL_OBB = "EXTERNAL_OBB";

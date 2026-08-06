@@ -4,7 +4,7 @@
 		<print pretty="true">Preparing installation...</print>
 
 		<!-- OpenFL & Lime (Required for Flixel) -->
-		<git name="openfl" url="https://github.com/CodenameCrew/cne-openfl" ref="old" />
+		<git name="openfl" url="https://github.com/Ajwyunsx/cne-openfl-old" ref="old" />
 		<git name="lime" url="https://github.com/QQQEB159/lime-8.1.2" />
 
 		<!-- Flixel -->
@@ -25,7 +25,7 @@
 
 		<lib name="nape-haxe4" />
 		<lib name="jsoni18n" />
-		<git name="HaxeGJClient" url="https://github.com/GamerPablito/HaxeGJClient" skipDeps="true" />
+		<git name="HaxeGJClient" url="https://github.com/Ajwyunsx/HaxeGJClient" skipDeps="true" />
 
 		<!-- For building lime -->
 		<lib global="true" name="hxp" /> <lib name="hxp" />
