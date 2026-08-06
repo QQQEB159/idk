@@ -302,7 +302,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
         var endAnim = __lastPlayedSingAnim + "-end";
         if (hasAnimation(endAnim))
         {
-            playAnim(endAnim, true, LOCK, 24);
+            playAnim(endAnim, true, LOCK, false, 24);
             return true;
         }
         
