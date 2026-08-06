@@ -65,7 +65,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 
 	@:noCompletion var __stunnedTime:Float = 0;
 	@:noCompletion var __lockAnimThisFrame:Bool = false;
-	@:noCompletion var __lastPlayedSingAnim:String = null;
+   public var __lastPlayedSingAnim:String = "";
 
 	@:noCompletion var __switchAnims:Bool = true;
 
@@ -297,7 +297,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 
 	function tryPlaySingEnd():Bool 
 	{
-        if (__lastPlayedSingAnim == null) return false;
+        if (__lastPlayedSingAnim == "") return false;
 
         var endAnim = __lastPlayedSingAnim + "-end";
         if (hasAnimation(endAnim))
