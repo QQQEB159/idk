@@ -31,17 +31,9 @@
 		<lib global="true" name="hxp" /> <lib name="hxp" />
 		<lib global="true" name="format" /> <lib name="format" />
 
-		<git name="hxcpp" url="https://github.com/CodenameCrew/cne-hxcpp" ref="old" />
+		<git name="hxcpp" url="https://github.com/ShadowEngineTeam/hxcpp" />
 
 		<git name="flixel-animate" url="https://github.com/CodenameCrew/cne-flixel-animate/" ref="old" skipDeps="true"/>
-	</if>
-	
-	<!-- Hxcpp Building -->
-	<if cond="build-hxcpp || all">
-		<print pretty="true">Rebuilding Hxcpp...</print>
-
-		<!-- Build hxcpp -->
-		<cmd inLib="hxcpp" dir="tools/hxcpp" cmd="haxe compile.hxml" />
 	</if>
 
 </libraries>
