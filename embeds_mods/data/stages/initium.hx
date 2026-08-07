@@ -547,6 +547,7 @@ function tutorialProgression()
 		case 13:
 			endTutorial = true;
 			hitbox.visible = true;
+			touchPad.visible = false;
 
 		case 1002:
 			nerdKyubey.setPosition(800, 650);
