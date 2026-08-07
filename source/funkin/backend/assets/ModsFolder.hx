@@ -41,7 +41,7 @@ class ModsFolder {
 	/**
 	 * If accessing a file as assets/data/global/LIB_mymod.hx should redirect to mymod:assets/data/global.hx
 	 */
-	public static var useLibFile:Bool = true;
+	public static var useLibFile:Bool = false;
 
 	/**
 	 * Whenever its the first time mods has been reloaded.
