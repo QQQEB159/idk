@@ -152,12 +152,21 @@ class ModsFolderLibrary extends AssetLibrary implements IModsAssetLibrary {
 
 	public override function list(type:String):Array<String> {
 		var result = [];
+
+		if (!FileSystem.exists(basePath) || !FileSystem.isDirectory(basePath))
+			return result;
+
 		__listAppend(result, '');
 		return result;
 	}
 
 	function __listAppend(arr:Array<String>, folder:String) {
-		for(file in FileSystem.readDirectory('$basePath/$folder')) {
+		var directory = '$basePath/$folder';
+
+		if (!FileSystem.exists(directory) || !FileSystem.isDirectory(directory))
+			return;
+
+		for(file in FileSystem.readDirectory(directory)) {
 			var fullPath = '$basePath/$folder/$file';
 			if (FileSystem.isDirectory(fullPath))
 				__listAppend(arr, '$folder$file/');
