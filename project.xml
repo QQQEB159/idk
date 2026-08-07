@@ -80,9 +80,6 @@
 	<!-- Comment this out to disable multithreading !-->
 	<haxedef name="ALLOW_MULTITHREADING" unless="web || flash" />
 
-	<!-- Comment this out to disable mods folder !-->
-	<haxedef name="MOD_SUPPORT" unless="web"/>
-
 	<!-- Comment this out to disable translations folders !-->
 	<haxedef name="TRANSLATIONS_SUPPORT"/>
 
@@ -94,9 +91,6 @@
 
 	<!-- Comment this out to disable support for custom ndlls. !-->
 	<haxedef name="NDLLS_SUPPORTED" unless="web || iphonesim || hl" />
-
-	<!-- Comment this out to use the default OpenFL assets system for the assets/ folder. !-->
-	<define name="USE_ADAPTED_ASSETS" unless="web" />
 
 	<!-- Comment this out to disable support for Away3D Flixel Integration (reduces compile times) !-->
 	<define name="THREE_D_SUPPORT" unless="STRIPPED_COMPILE" />
