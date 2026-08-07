@@ -77,6 +77,83 @@ final class TranslationUtil
 		return ["name" => getLanguageName(name), "credits" => "", "version" => "1.0.0"];
 	}
 
+	private static function cleanAssetPath(path:String):String {
+		path = path.replace("\\", "/");
+		var separator = path.indexOf(":");
+		if (separator != -1)
+			path = path.substr(separator + 1);
+		while (path.startsWith("/"))
+			path = path.substr(1);
+		return path;
+	}
+
+	private static function resolveAssetPath(path:String):String {
+		path = cleanAssetPath(path);
+		var candidates = path.startsWith("assets/") ? [path, path.substr("assets/".length)] : [path, "assets/" + path];
+
+		for (candidate in candidates)
+			if (Assets.exists(candidate))
+				return candidate;
+
+		var lowerCandidates = [for (candidate in candidates) candidate.toLowerCase()];
+		for (asset in Assets.list()) {
+			var cleanAsset = cleanAssetPath(asset);
+			if (lowerCandidates.contains(cleanAsset.toLowerCase()))
+				return cleanAsset;
+		}
+
+		return path;
+	}
+
+	private static inline function assetExists(path:String):Bool
+		return Assets.exists(resolveAssetPath(path));
+
+	private static function getEmbeddedFolders(folder:String):Array<String> {
+		var folders:Array<String> = [];
+		folder = cleanAssetPath(folder);
+		if (!folder.endsWith("/"))
+			folder += "/";
+
+		for (asset in Assets.list()) {
+			var cleanAsset = cleanAssetPath(asset);
+			if (!cleanAsset.startsWith(folder))
+				continue;
+
+			var relative = cleanAsset.substr(folder.length);
+			var slash = relative.indexOf("/");
+			if (slash <= 0)
+				continue;
+
+			var folderName = relative.substr(0, slash);
+			if (!folders.contains(folderName))
+				folders.push(folderName);
+		}
+
+		return folders;
+	}
+
+	private static function getEmbeddedFiles(folder:String):Array<String> {
+		var files:Array<String> = [];
+		folder = cleanAssetPath(folder);
+		if (!folder.endsWith("/"))
+			folder += "/";
+
+		for (asset in Assets.list()) {
+			var cleanAsset = cleanAssetPath(asset);
+			if (!cleanAsset.startsWith(folder))
+				continue;
+
+			var relative = cleanAsset.substr(folder.length);
+			if (relative.length <= 0 || relative.contains("/"))
+				continue;
+
+			if (!files.contains(relative))
+				files.push(relative);
+		}
+
+		return files;
+	}
+
 	/**
 	 * Updates the language.
 	 * Also changes the translations map.
@@ -134,16 +211,37 @@ final class TranslationUtil
 
 	public static function exists(id:String):Bool {
 		#if TRANSLATIONS_SUPPORT
-		for (map in [stringMap, alternativeStringMap]) if (map.exists(id)) return true;
+		for (map in [stringMap, alternativeStringMap]) if (getFromMap(map, id) != null) return true;
 		#end
 		return false;
+	}
+
+	private static function getFromMap(map:Map<String, IFormatInfo>, id:String):IFormatInfo {
+		if (id == null)
+			return null;
+
+		if (map.exists(id))
+			return map.get(id);
+
+		var lowerId = id.toLowerCase();
+		if (map.exists(lowerId))
+			return map.get(lowerId);
+
+		for (key => value in map)
+			if (key.toLowerCase() == lowerId)
+				return value;
+
+		return null;
 	}
 
 	public static function getRaw(id:String, ?def:String):IFormatInfo
 	{
 		#if TRANSLATIONS_SUPPORT
-		for (map in [stringMap, alternativeStringMap]) if (map.exists(id))
-			return map.get(id);
+		for (map in [stringMap, alternativeStringMap]) {
+			var value = getFromMap(map, id);
+			if (value != null)
+				return value;
+		}
 		#end
 
 		if(def != null)
@@ -193,19 +291,35 @@ final class TranslationUtil
 		langConfigs = getDefaultLangConfigs();
 		var mainPath:String = translationsMain("");
 		var langName:String = null;
-		for (lang in Paths.assetsTree.getFolders("assets/" + mainPath)) {
+		var languageFolders:Array<String> = [];
+		for (lang in Paths.assetsTree.getFolders("assets/" + mainPath))
+			if (!languageFolders.contains(lang))
+				languageFolders.push(lang);
+		for (lang in getEmbeddedFolders("assets/" + mainPath))
+			if (!languageFolders.contains(lang))
+				languageFolders.push(lang);
+
+		for (lang in languageFolders) {
 			if (!isAllowed(lang)) continue;
 
-			var path:String = Path.join([mainPath, lang, "config.ini"]);
+			var path:String = 'assets/$mainPath$lang/config.ini';
 			var config = getDefaultConfig(lang);
 
-			if(Assets.exists(path)) {
-				var c = IniUtil.parseAsset(path);
+			if(assetExists(path)) {
+				var c = IniUtil.parseAsset(resolveAssetPath(path));
 				for (i => v in c)
 					for (key => value in v)
 						config[key] = value;
 			} else { // if there was no config.ini, use the file name as the language name
-				for(file in Paths.getFolderContent(mainPath + lang).sortAlphabetically()) {
+				var configFiles:Array<String> = [];
+				for (file in Paths.getFolderContent(mainPath + lang))
+					if (!configFiles.contains(file))
+						configFiles.push(file);
+				for (file in getEmbeddedFiles('assets/$mainPath$lang'))
+					if (!configFiles.contains(file))
+						configFiles.push(file);
+
+				for(file in configFiles.sortAlphabetically()) {
 					if(Path.extension(file) == "xml") {
 						config["name"] = Path.withoutExtension(file);
 						break;
@@ -252,31 +366,33 @@ final class TranslationUtil
 			}
 		}
 
-		// todo make it load the default languages in a second string map
+		function addTranslationFile(file:String) {
+			if(Path.extension(file).toLowerCase() != "xml") return;
 
-		for(mod in ModsFolder.getLoadedModsLibs(true)) for(file in mod.getFiles("assets/" + mainPath).sortAlphabetically().map((v)->'$mainPath/$v')) {
-			if(Path.extension(file).toLowerCase() != "xml") continue;
-
-			// Parse the XML
+			var assetPath = resolveAssetPath(file);
 			var xml:Access = null;
-			try xml = new Access(Xml.parse(Assets.getText("assets/" + file)))
+			try xml = new Access(Xml.parse(Assets.getText(assetPath)))
 			catch(e) Logs.error('Error while parsing $file: ${Std.string(e)}', "Language");
 
-			if (xml == null) continue;
+			if (xml == null) return;
 			if (!xml.hasNode.language) {
 				Logs.warn('File $file requires a <language> root element.', "Language");
-				continue;
+				return;
 			}
 
 			var langNode = xml.node.language;
 			var prefix = langNode.getAtt("prefix").getDefault("");
-
-			//if (langNode.has.name) {
-			//	getConfig(lang).set("name", langNode.att.name);
-			//}
-
 			parseXml(langNode, prefix);
 		}
+
+		// todo make it load the default languages in a second string map
+
+		for(mod in ModsFolder.getLoadedModsLibs(true)) for(file in mod.getFiles("assets/" + mainPath).sortAlphabetically().map((v)->'$mainPath/$v')) {
+			addTranslationFile("assets/" + file);
+		}
+
+		for(file in getEmbeddedFiles("assets/" + mainPath).sortAlphabetically())
+			addTranslationFile("assets/" + mainPath + "/" + file);
 
 		for(pair in translations) {
 			var node = pair.node;
