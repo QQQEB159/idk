@@ -42,7 +42,7 @@ class EntryFieldUI extends FlxBasic
 		fakeString.y = entryFieldBG.y + entryFieldBG.height / 2 - fakeString.height / 2;
 		fakeString.visible = false;
 		
-		var backBtn = new FlxButton(400, -20, "delete", () -> deleteChar());
+		var backBtn = new FlxButton(400, -25, "delete", () -> deleteChar());
 		backBtn.scale.set(1.2, 1.2);
 		backBtn.updateHitbox();
         group.add(backBtn);

@@ -481,7 +481,7 @@ function update(elapsed:Float)
 			{
 				loadedLeaderboards = false;
 			});
-			grabScores.send(false);
+			grabScores.send(true);
 		}
 
 		if (FlxG.keys.justPressed.R #if TOUCH_CONTROLS || touchPad != null && touchPad.buttonR.justPressed #end)

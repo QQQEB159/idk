@@ -298,7 +298,7 @@ class GameJoltSignInUI extends FlxBasic
 			GenUtil.playUISound('error');
 			canControl = true;
 		});
-		signInRequest.send(false);
+		signInRequest.send(true);
 	}
 
 	override function draw()
