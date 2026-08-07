@@ -10,7 +10,7 @@ import funkin.menus.StoryMenuState;
 import openfl.display.BlendMode;
 
 var canControl:Bool = true;
-FlxG.sound.load(Paths.music("gameover"));
+FlxG.sound.load(Paths.music("gameOver"));
 FlxG.sound.load(Paths.sound("game/gameover/fall"));
 FlxG.sound.load(Paths.sound("game/gameover/flashbuildup"));
 FlxG.sound.load(Paths.sound("game/gameover/gemshatter"));
@@ -211,7 +211,7 @@ function create()
 			gf.playAnim('loop');
 			lightning.animation.finishCallback = null;
 
-			CoolUtil.playMusic(Paths.music("gameover"), false, 1, false);
+			CoolUtil.playMusic(Paths.music("gameOver"), false, 1, false);
 			backingTrack.play();
 
 			startEndSequence = true;
