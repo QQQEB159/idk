@@ -4,14 +4,14 @@
       "button": "buttonLeft",
       "graphic": "left",
       "x": 0,
-      "y": 587,
+      "y": 880.5,
       "color": "0xFFC24B99"
     },
     {
       "button": "buttonRight",
       "graphic": "right",
-      "x": 127,
-      "y": 587,
+      "x": 190.5,
+      "y": 880.5,
       "color": "0xFFF9393F"
     }
   ]

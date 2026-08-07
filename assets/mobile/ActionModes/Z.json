@@ -1,0 +1,11 @@
+{
+  "buttons": [
+    {
+      "button": "buttonZ",
+      "graphic": "z",
+      "x": 1734,
+      "y": 894,
+      "color": "0x44FF00"
+    }
+  ]
+}
