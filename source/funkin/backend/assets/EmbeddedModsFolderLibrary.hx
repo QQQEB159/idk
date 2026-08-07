@@ -27,30 +27,32 @@ class EmbeddedModsFolderLibrary extends AssetLibrary implements IModsAssetLibrar
 	public var _parsedAsset:String = null;
 
 	public function new(basePath:String, libName:String, ?modName:String) {
-		this.basePath = normalizePath(basePath);
-		this.libName = libName;
-		this.modName = modName == null ? Path.withoutDirectory(this.basePath) : modName;
+        this.basePath = normalizePath(basePath);
+        this.libName = libName;
+        this.modName = modName == null ? Path.withoutDirectory(this.basePath) : modName;
+    
+        var prefixCheck = (this.basePath + "/").toLowerCase();
+    
+        for (asset in Assets.list()) {
+            var cleanAsset = asset;
+            var separator = cleanAsset.indexOf(":");
+            if (separator != -1)
+                cleanAsset = cleanAsset.substr(separator + 1);
+    
+            if (!cleanAsset.toLowerCase().startsWith(prefixCheck))
+                continue;
+    
+            var relative = cleanAsset.substr(this.basePath.length + 1);
+            if (relative.length <= 0 || relative.endsWith("/"))
+                continue;
+    
+            var lower = relative.toLowerCase();
+            assets.set(lower, asset);
+            nameMap.set(lower, relative);
+        }
 
-		for (asset in Assets.list()) {
-			var cleanAsset = asset;
-			var separator = cleanAsset.indexOf(":");
-			if (separator != -1)
-				cleanAsset = cleanAsset.substr(separator + 1);
-
-			if (!cleanAsset.startsWith(this.basePath + "/"))
-				continue;
-
-			var relative = cleanAsset.substr(this.basePath.length + 1);
-			if (relative.length <= 0 || relative.endsWith("/"))
-				continue;
-
-			var lower = relative.toLowerCase();
-			assets.set(lower, asset);
-			nameMap.set(lower, relative);
-		}
-
-		super();
-	}
+        super();
+    }
 
 	function toString():String {
 		return '(EmbeddedModsFolderLibrary: $modName @ $basePath)';

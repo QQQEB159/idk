@@ -117,9 +117,9 @@ class HScript extends Script {
 			Logs.logText(err, RED)
 		], ERROR);
 		
-		/*#if mobile
+		#if mobile
         funkin.backend.utils.NativeAPI.showMessageBox("HSCRIPT ERROR", fn + err, MSG_ERROR);
-	    #end*/
+	    #end
 	}
 
 	private function _warnHandler(error:Error) {
