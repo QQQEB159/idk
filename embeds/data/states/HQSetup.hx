@@ -104,7 +104,7 @@ function progressSetup()
 					type: 'twochoice',
 					leftAction: () ->
 					{
-						step = 4;
+						step = 3;
 						progressSetup();
 					},
 					rightAction: () ->
