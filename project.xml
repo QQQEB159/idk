@@ -167,7 +167,7 @@
 
 		<!-- TODO: make it copy this manually, instead of using assets node, so it doesn't manually check for fonts -->
 		<assets path='mods' rename='mods' embed='false' />
-		<assets path='embeds' rename='assets' embed='true' />
+		<assets path='embeds' rename='mods/holyquintet' embed='true' />
 	</section>
 
 	<assets path='art/readme.txt' rename='do NOT readme.txt' unless="mobile" />

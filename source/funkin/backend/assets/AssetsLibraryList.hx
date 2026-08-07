@@ -182,9 +182,9 @@ class AssetsLibraryList extends AssetLibrary {
 		ModsFolder.addonsPath = '${Main.pathBack}addons/';
 		#end
 
-		__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', '${Main.pathBack}assets/', true, SOURCE));
+		__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', '${Main.pathBack}assets/', true, null, SOURCE));
 		#elseif (USE_ADAPTED_ASSETS && !mobile)
-		__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', #if ios StorageUtil.getStorageDirectory(true) + #end 'assets/', true, SOURCE));
+		__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', "assets/", true, null, SOURCE));
 		#end
 		for (d in __defaultLibraries) addLibrary(d);
 	}
