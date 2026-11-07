@@ -420,6 +420,7 @@
       "Controls": "Controles",
       "Gameplay": "Jugabilidad",
       "Language": "Idioma",
+      "Mobile Options": "Opciones móviles",
       "Other": "Otros",
       "Visuals": "Visuales"
     },
@@ -456,6 +457,10 @@
     "StreamedMusic": "Musica Transmitida",
     "StreamedVocals": "Vocales Transmitidas",
     "StrumUnderlayAlpha": "Transparencia del Fondo",
+    "TouchPadAlpha": "Opacidad del panel táctil",
+    "HitboxAlpha": "Opacidad de la hitbox",
+    "HitboxPos": "Posición de la hitbox",
+    "OldPadTexture": "Usar textura antigua del pad",
     "UpNote": "Nota Arriba",
     "UpUI": "UI Arriba",
     "VisitWebsite": "Visitar Sitio Web"
