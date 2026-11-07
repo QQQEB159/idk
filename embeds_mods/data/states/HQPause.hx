@@ -45,7 +45,7 @@ function create(e)
 	{
 		var menu_Button = new ButtonUI(50 + (40 * i), 175 + (150 * i), 'basic');
 		menu_Button.ID = i;
-		menu_Button.text = menuOptions[i];
+		menu_Button.text = i18n.tr('Gameplay/Pause/${menuOptions[i]}');
 		add(menu_Button);
 		menu_Buttons.push(menu_Button);
 

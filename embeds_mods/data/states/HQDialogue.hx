@@ -237,8 +237,8 @@ function create()
 	btnLog.x = dialogueBox.x + dialogueBox.width / 2 - btnLog.width / 2;
 	btnLog.cameras = [camUI];
 
-	btnLogText = new FlxText(btnLog.x + 60, btnLog.y + 7, btnLog.width - 100, i18n.tr('Dialogue/Log'));
-	btnLogText.setFormat(Paths.font("shingo.otf"), 24, FlxColor.WHITE, FlxTextAlign.CENTER);
+	btnLogText = new FlxText(btnLog.x + 60, btnLog.y + 10, btnLog.width - 100, i18n.tr('Dialogue/Log'));
+	btnLogText.setFormat(Paths.font("shingo.otf"), 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 	add(btnLogText);
 	btnLogText.cameras = [camUI];
 
@@ -253,8 +253,8 @@ function create()
 	btnSkip.x = dialogueBox.x + dialogueBox.width / 2 - btnSkip.width / 2;
 	btnSkip.cameras = [camUI];
 
-	btnSkipText = new FlxText(btnSkip.x + 60, btnSkip.y + 7, btnSkip.width - 100, i18n.tr('Dialogue/Skip'));
-	btnSkipText.setFormat(Paths.font("shingo.otf"), 24, FlxColor.WHITE, FlxTextAlign.CENTER);
+	btnSkipText = new FlxText(btnSkip.x + 60, btnSkip.y + 10, btnSkip.width - 100, i18n.tr('Dialogue/Skip'));
+	btnSkipText.setFormat(Paths.font("shingo.otf"), 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 	add(btnSkipText);
 	btnSkipText.cameras = [camUI];
 

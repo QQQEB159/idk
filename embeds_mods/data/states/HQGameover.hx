@@ -24,7 +24,14 @@ var startEndSequence:Bool = false;
 var lightDustSprites:Array<FunkinSprite> = [];
 var textBump:FlxTween;
 var textCylces:Int = 0;
-var strings:Array<String> = ['Never give up!', 'Stay strong!', 'You got this!', 'Hang in there!'];
+
+var strings:Array<String> = [
+	i18n.tr('Gameplay/GameOver/Quotes/0'),
+	i18n.tr('Gameplay/GameOver/Quotes/1'),
+	i18n.tr('Gameplay/GameOver/Quotes/2'),
+	i18n.tr('Gameplay/GameOver/Quotes/3'),
+];
+
 var godukaPrompt:Bool = false;
 var alreadyTransitioned:Bool = false;
 

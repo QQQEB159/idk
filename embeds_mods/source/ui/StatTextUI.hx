@@ -43,6 +43,27 @@ class StatTextUI extends FlxBasic
 			hueShader.contrast = 0.0;
 			hueShader.saturation = 0.0;
 		}
+
+		var keyString:String = '';
+		switch (newStat)
+		{
+			case 'Breaks':
+				keyString = 'Breaks';
+
+			case 'Score':
+				keyString = 'Score';
+
+			case 'Accuracy':
+				keyString = 'Accuracy';
+
+			case 'FC Rank':
+				keyString = 'FCRank';
+
+			case 'Atks. Sustained':
+				keyString = 'AttacksSustained';
+		}
+
+		headerTxt.text = i18n.tr('Gameplay/$keyString');
 	}
 
 	public override function update(elapsed)

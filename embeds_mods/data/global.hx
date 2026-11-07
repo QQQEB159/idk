@@ -26,7 +26,7 @@ public static var i18n:I18n;
 public static var signedIntoGJ:Bool = false;
 public static var versionNumber:String = '';
 public static var newsText:String = '';
-public static var thisVersionNumber:String = '1.0.5';
+public static var thisVersionNumber:String = '1.0.7';
 public static var reattemptConnection:Bool = true;
 public static var onOutdatedBuild:Bool = false;
 public static var lockGJprogression:Bool = false;
@@ -224,7 +224,7 @@ function postStateSwitch()
 	Flags.DISABLE_LANGUAGES = true;
 	Flags.DEFAULT_PAUSE_SCRIPT = 'data/states/HQPause';
 	if (Options.devMode)
-		Framerate.codenameBuildField.text = 'Vs Holy Quintet / ' + Flags.COMMIT_MESSAGE;
+		Framerate.codenameBuildField.text = 'Vs Holy Quintet / ' + '(v$thisVersionNumber) / ' + Flags.COMMIT_MESSAGE;
 	else
 		Framerate.codenameBuildField.text = 'Vs Holy Quintet (v$thisVersionNumber)';
 

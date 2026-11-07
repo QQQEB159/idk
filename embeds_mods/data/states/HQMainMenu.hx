@@ -118,11 +118,11 @@ function create()
 		switch (i)
 		{
 			case 0:
-				medalText.text = 'All Songs Cleared';
+				medalText.text = i18n.tr('Main/Medals/AllSongsCleared');
 			case 1:
-				medalText.text = 'Gauntlet Cleared';
+				medalText.text = i18n.tr('Main/Medals/GauntletCleared');
 			case 2:
-				medalText.text = 'All Accolades';
+				medalText.text = i18n.tr('Main/Medals/AllAccolades');
 		}
 
 		if (i == 0
@@ -340,6 +340,11 @@ function update(elapsed:Float)
 		persistentUpdate = false;
 		persistentDraw = true;
 		openSubState(new funkin.editors.EditorPicker());
+	}
+	
+	if (FlxG.keys.justPressed.NINE && Options.devMode)
+	{
+		FlxG.switchState(new ModState("HQSHOP"));
 	}
 }
 

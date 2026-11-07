@@ -29,6 +29,7 @@ class Options
 	public static var middleScroll:Bool = false;
 	public static var strumUnderlayAlpha:Float = 0;
 	public static var playerStrumScale:Float = 1;
+	public static var playerStrumSpeed:Float = 1;
 	public static var flashingLights:Bool = true;
 	public static var ghostTapping:Bool = true;
 	public static var flashingMenu:Bool = true;

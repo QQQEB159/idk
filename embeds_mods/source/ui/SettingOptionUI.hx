@@ -229,6 +229,9 @@ class SettingOptionUI extends FlxBasic
 
 		if (data.parentValue == 'songOffset')
 			returnedString += 'ms';
+			
+		if (data.parentValue == 'playerStrumSpeed')
+			returnedString += 'x';
 
 		if (data.parentValue == 'framerate')
 			returnedString += ' FPS';

@@ -114,7 +114,7 @@ function onEvent(e)
 			}
 		});
 
-		FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.9 * Options.volumeSFX).pitch = 1.0;
+		FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.5 * Options.volumeSFX).pitch = 1.0;
 
 		new FlxTimer().start(Conductor.stepCrochet * 4 / 1000, function(tmr:FlxTimer)
 		{
@@ -146,8 +146,8 @@ function onEvent(e)
 				}
 			});
 
-			FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.9 * Options.volumeSFX).pitch = 1.05;
-			FlxG.sound.play(Paths.sound('mechanics/kyoko_attack'), 0.9 * Options.volumeSFX).pitch = 1.0;
+			FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.5 * Options.volumeSFX).pitch = 1.05;
+			FlxG.sound.play(Paths.sound('mechanics/kyoko_attack'), 0.7 * Options.volumeSFX).pitch = 1.0;
 			dad.playAnim('attack', true);
 		});
 
@@ -181,7 +181,7 @@ function onEvent(e)
 				}
 			});
 
-			FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.9 * Options.volumeSFX).pitch = 1.1;
+			FlxG.sound.play(Paths.sound('mechanics/kyoko_warning'), 0.5 * Options.volumeSFX).pitch = 1.1;
 		});
 
 		new FlxTimer().start(Conductor.stepCrochet * 8.5 / 1000, function(tmr:FlxTimer)

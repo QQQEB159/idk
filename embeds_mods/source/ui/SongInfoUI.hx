@@ -156,7 +156,7 @@ class SongInfoUI extends FlxBasic
 		lockedText.origin.x = 0;
 		lockedText.scale.x = 0.7;
 
-		copyrightText = new FlxText(0, 0, 0, "(This song isn't copyrighted)");
+		copyrightText = new FlxText(0, 0, 0, "(" + i18n.tr("Freeplay/NoCopyright") + ")");
 		copyrightText.setFormat(Paths.font("shingo.otf"), 18, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0x880D090D);
 		copyrightText.borderSize = 3.5;
 		copyrightText.setPosition(((songinfo_Sprite / 2) - (songinfo_Text.width / 2)) * -0.35, ((songinfo_Sprite / 2) - (songinfo_Text.height / 2)) * -3.75);
@@ -292,6 +292,8 @@ class SongInfoUI extends FlxBasic
 		if (isUnlockable)
 		{
 			lockedText.text = i18n.tr('Freeplay/PressToUnlock');
+			if (Options.language == 'es_US')
+				lockedText.scale.x = 0.5;
 		}
 		else
 		{

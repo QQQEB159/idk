@@ -15,7 +15,7 @@
 		<git name="hscript-improved" url="https://github.com/CodenameCrew/hscript-improved" ref="codename-dev" />
 		<git name="hxdiscord_rpc" url="https://github.com/CodenameCrew/cne-hxdiscord_rpc" ref="old" skipDeps="true" />
 		<lib name="funkin-modchart" skipDeps="true" />
-		<lib name="hxvlc" version="2.3.0" skipDeps="true" />
+		<lib name="hxvlc" version="2.3.1" skipDeps="true" />
 
 		<!-- Documentation and other features -->
 		<git name="away3d" url="https://github.com/CodenameCrew/away3d" />

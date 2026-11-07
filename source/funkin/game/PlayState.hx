@@ -711,7 +711,7 @@ class PlayState extends MusicBeatState
 		if (SONG == null)
 			SONG = Chart.parse('tutorial', difficulty = 'normal', variation = null);
 
-		scrollSpeed = SONG.scrollSpeed;
+		scrollSpeed = SONG.scrollSpeed * Options.playerStrumSpeed;
 
 		Conductor.setupSong(SONG);
 

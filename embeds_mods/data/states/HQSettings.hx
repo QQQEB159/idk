@@ -164,6 +164,15 @@ var gameplaySettingsList = [
 		upperLimit: 1.3
 	},
 	{
+		nameKey: 'ScrollSpeed',
+		descriptionKey: 'Placeholder Text',
+		type: 'float',
+		defaultValue: false,
+		parentValue: 'playerStrumSpeed',
+		lowerLimit: 1.0,
+		upperLimit: 1.5
+	},
+	{
 		nameKey: 'CamZoomOnBeat',
 		descriptionKey: 'Placeholder Text',
 		type: 'bool',
@@ -286,14 +295,14 @@ var languageSettingsList = [
 		type: 'language',
 		defaultValue: 'es_US',
 		parentValue: 'language'
-	},
-	{
-		nameKey: 'Japanese',
-		descriptionKey: 'Placeholder Text',
-		type: 'language',
-		defaultValue: 'ja',
-		parentValue: 'language'
-	}
+	} // ,
+	// {
+	//	nameKey: 'Japanese',
+	//	descriptionKey: 'Placeholder Text',
+	//	type: 'language',
+	//	defaultValue: 'ja',
+	//	parentValue: 'language'
+	// }
 ];
 
 var mobileSettings:Array<SettingOptionUI> = [];
@@ -357,8 +366,6 @@ function create()
 	DiscordUtil.changePresenceSince("In Settings", null);
 	CoolUtil.playMusic(Paths.music("settings"));
 
-	mainOptions.remove('Language');
-
 	metronomeSnd = new FlxSound().loadEmbedded(Paths.sound('editors/charter/metronome'));
 
 	bg_Spr = new FunkinSprite().loadGraphic(Paths.image('ui/common/background'));
@@ -378,7 +385,7 @@ function create()
 	{
 		var menu_Button = new ButtonUI((50 + (40 * i)), 175 + (150 * i), 'basic');
 		menu_Button.ID = i;
-		menu_Button.text = mainOptions[i];
+		menu_Button.text = i18n.tr('Settings/Catas/${mainOptions[i]}');
 
 		menu_Button.group.y += 65;
 
@@ -597,7 +604,14 @@ function confirmSelection()
 			if (option.data.type == 'language' && !option.selected)
 				option.option_Setting.text = '';
 			if (option.selected && (option.data.type == 'bool' || option.data.type == 'language'))
+			{
 				option.selection(0);
+				if (option.data.type == 'language')
+				{
+					i18n.loadFromString(Assets.getText('data/langs/${Options.language}/translations.json'));
+					FlxG.resetState();
+				}
+			}
 			if (option.selected && option.data.type == 'control')
 			{
 				new FlxTimer().start(0.0001, function(tmr:FlxTimer)
@@ -713,11 +727,11 @@ function updateSubMenu()
 			targetSettingsArray = gameplaySettings;
 		case 2:
 			targetSettingsArray = visualSettings;
-		// case 3:
-		//	targetSettingsArray = languageSettings;
 		case 3:
-			targetSettingsArray = mobileSettings;
+	        targetSettingsArray = languageSettings;
 		case 4:
+			targetSettingsArray = mobileSettings;
+		case 5:
 			targetSettingsArray = otherSettings;
 	}
 
@@ -757,11 +771,11 @@ function changeSelection(change:Int)
 		for (grp in visualSettings)
 			grp.group.visible = (sm_curSel == 2 ? true : false);
 		for (grp in languageSettings)
-			grp.group.visible = false;
-		for (grp in mobileSettings)
 			grp.group.visible = (sm_curSel == 3 ? true : false);
-		for (grp in otherSettings)
+		for (grp in mobileSettings)
 			grp.group.visible = (sm_curSel == 4 ? true : false);
+		for (grp in otherSettings)
+			grp.group.visible = (sm_curSel == 5 ? true : false);
 	}
 	else
 	{

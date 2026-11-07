@@ -3,50 +3,23 @@ import openfl.display.BlendMode;
 
 importScript('data/scripts/dropshadow-effect');
 var flashbackVideo:FlxVideoSprite;
-var introVideo:FlxVideoSprite;
 public var kyubey:Character;
 public var kyubeySpeaker:Character;
 var bnwShader:CustomShader;
-var camVideo:FlxCamera;
 var camFX:FlxCamera;
 
 function create()
 {
 	startUIvisablityArgs = [true, true, true, true, true, 0, false, 4, "linear", "In"];
 
-	camVideo = new FlxCamera(0, 0, FlxG.width, FlxG.height);
-	camVideo.bgColor = 0x00000000;
 	camFX = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 	camFX.bgColor = 0x00000000;
 	FlxG.cameras.remove(camGame, false);
 	FlxG.cameras.remove(camHUD, false);
 	FlxG.cameras.add(camGame, true);
-	FlxG.cameras.add(camVideo, false);
 	FlxG.cameras.add(camFX, false);
 	FlxG.cameras.add(camHUD, false);
 
-	introVideo = new FlxVideoSprite(0, 0);
-	introVideo.antialiasing = true;
-	introVideo.bitmap.onFormatSetup.add(function():Void
-	{
-		if (introVideo.bitmap != null && introVideo.bitmap.bitmapData != null)
-		{
-			final scale:Float = Math.min((FlxG.width / introVideo.bitmap.bitmapData.width) * 1, (FlxG.height / introVideo.bitmap.bitmapData.height) * 1);
-
-			//introVideo.setGraphicSize(introVideo.bitmap.bitmapData.width * scale, introVideo.bitmap.bitmapData.height * scale);
-			introVideo.updateHitbox();
-			//introVideo.screenCenter();
-		}
-	});
-	introVideo.bitmap.onEndReached.add(() ->
-	{
-		introVideo.visible = false;
-	});
-	add(introVideo);
-	introVideo.cameras = [camVideo];
-	introVideo.load(Paths.video("qqqeb"));
-	//introVideo.play();
-	
 	// BG Sprites
 	ootBG_sky = new FunkinSprite(300, -100);
 	ootBG_sky.loadSprite(Paths.image("stages/out-of-time/sky"));
@@ -298,8 +271,6 @@ function beatHit(curBeat:Int)
 
 function stepHit(curStep:Int)
 {
-    if (curStep == 2190)
-        introVideo.play();
 }
 
 function onEvent(e)
@@ -519,7 +490,6 @@ function onGamePause(e)
 		auroraVideo.pause();
 		flashbackVideo.pause();
 	}
-	introVideo.pause();
 }
 
 function onSubstateClose(e)
@@ -534,8 +504,5 @@ function onSubstateClose(e)
 			if (flashbackVideo.visible)
 				flashbackVideo.resume();
 		}
-		
-		if (introVideo.visible)
-		    introVideo.resume();
 	}
 }

@@ -244,6 +244,11 @@ function postCreate()
 		FlxTween.tween(firstText, {y: firstText.y - 10}, 0.5, {ease: FlxEase.sineInOut, type: FlxTween.PINGPONG});
 	}
 
+	if (Options.middleScroll)
+	{
+		firstText.screenCenter(FlxAxes.X);
+	}
+	
 	if (!Options.lowMemoryMode)
 	{
 		reflectionPlayer = new Character(bf.x, bf.y + 1175, 'gf-base', true);

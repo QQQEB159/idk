@@ -122,6 +122,12 @@ function create()
 		
 	addTouchPad('UP_DOWN', 'A_B');
 	addTouchPadCamera();
+	
+	if (Options.language == 'es_US')
+	{
+		godukaHelpTxt.x += 65;
+		godukaYesTxt.x += 25;
+	}
 }
 
 function postCreate()
