@@ -200,9 +200,9 @@ class FilterRenderer
 
 		bitmap = renderToBitmap((cam, mat) ->
 		{
-			bounds = sanitizeBounds(movieclip.getBounds(frameIndex, null, null, false));
+			bounds = movieclip.getBounds(frameIndex, null, null, false);
 			@:privateAccess
-			filteredBounds = sanitizeBounds(expandFilterBounds(bounds.copyTo(FlxRect.get()), movieclip._filters));
+			filteredBounds = expandFilterBounds(bounds.copyTo(FlxRect.get()), movieclip._filters);
 
 			mat.setTo(1 / scale.x, 0, 0, 1 / scale.y, 0, 0);
 			movieclip._drawTimeline(cam, frameIndex, 0, mat, null, NORMAL, false, null);
@@ -483,9 +483,8 @@ class FilterRenderer
 	public static function bakeFilters(movieclip:MovieClipInstance, frameIndex:Int, filters:Array<BitmapFilter>, scale:FlxPoint,
 			quality:FilterQuality = MEDIUM):AtlasInstance
 	{
-		var filteredBounds:FlxRect = sanitizeBounds(movieclip.getBounds(0));
+		var filteredBounds:FlxRect = movieclip.getBounds(0);
 		expandFilterBounds(filteredBounds, filters);
-		filteredBounds = sanitizeBounds(filteredBounds);
 
 		@:privateAccess
 		var bitmap:BitmapData = getBitmap((cam, mat) ->
@@ -611,28 +610,6 @@ class FilterRenderer
 		return masked;
 	}
 	#end
-
-	// 新增：判定浮点数是否失效（NaN 或 正负无穷）
-	static inline function isInvalidFloat(value:Float):Bool
-		return value != value || value == Math.POSITIVE_INFINITY || value == Math.NEGATIVE_INFINITY;
-
-	// 新增：净化 bounds，NaN/Infinity/非正尺寸拿去建 BitmapData 会空引用崩溃
-	static function sanitizeBounds(rect:FlxRect):FlxRect
-	{
-		if (rect == null)
-			return FlxRect.get(0, 0, 1, 1);
-
-		if (isInvalidFloat(rect.x) || isInvalidFloat(rect.y))
-			rect.x = rect.y = 0;
-
-		if (isInvalidFloat(rect.width) || rect.width <= 0)
-			rect.width = 1;
-
-		if (isInvalidFloat(rect.height) || rect.height <= 0)
-			rect.height = 1;
-
-		return rect;
-	}
 
 	public static function expandFilterBounds(baseBounds:FlxRect, filters:Array<BitmapFilter>)
 	{

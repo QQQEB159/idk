@@ -180,9 +180,6 @@ abstract SymbolInstanceJson(Dynamic)
 	public var LP(get, never):String;
 	public var MX(get, never):MatrixJson;
 
-	// 新增：暴露实例名 IN（Adobe Animate 的“实例名称”，如 ikNode_20），SN 只是符号名
-	public var IN(get, never):Null<String>;
-
 	public var B(get, never):Null< #if flash Int #else BlendMode #end>;
 	public var C(get, never):Null<ColorJson>;
 	public var F(get, never):Null<Array<FilterJson>>;
@@ -201,22 +198,6 @@ abstract SymbolInstanceJson(Dynamic)
 
 	extern inline function get_LP()
 		return this.LP ?? this.loop ?? "LP";
-
-	// 新增：读底层 Dynamic，避免走自己的 getter 递归；兼容各导出器的字段拼写
-	inline function get_IN():Null<String>
-	{
-		var raw:Dynamic = cast this;
-		var value:Dynamic = raw.IN;
-
-		if (value == null)
-			value = raw.instanceName;
-		if (value == null)
-			value = raw.instance_name;
-		if (value == null)
-			value = raw.Instance_name;
-
-		return (value == null) ? null : Std.string(value);
-	}
 
 	extern inline function get_MX()
 		return MatrixJson.resolve(this);
@@ -731,10 +712,6 @@ abstract MatrixJson(Array<Float>) from Array<Float>
 
 	public static function from3Dto2D(mat3D:Array<Float>):Array<Float>
 	{
-		// 新增：矩阵残缺时直接退回单位矩阵，别下标越界
-		if (mat3D == null || mat3D.length < 16)
-			return [1, 0, 0, 1, 0, 0];
-
 		final hasPerspective:Bool = (mat3D[3] != 0) || (mat3D[7] != 0) || (mat3D[11] != 0) || (mat3D[15] != 1);
 		if (!hasPerspective)
 			return [mat3D[0], mat3D[1], mat3D[4], mat3D[5], mat3D[12], mat3D[13]];
@@ -747,12 +724,6 @@ abstract MatrixJson(Array<Float>) from Array<Float>
 			var x = p[0];
 			var y = p[1];
 			var z = mat3D[3] * x + mat3D[7] * y + mat3D[15];
-
-			// 新增：z 为 0 / NaN / 正负无穷时坐标会全变 NaN，后面建 BitmapData 会空引用
-			if (z == 0.0 || z != z || z == Math.POSITIVE_INFINITY || z == Math.NEGATIVE_INFINITY)
-				z = 1.0;
-
-			// 核心修复：加括号，原来按优先级只除了平移项，透视下坐标会被放大 z 倍
 			transformed.push([
 				(mat3D[0] * x + mat3D[4] * y + mat3D[12]) / z,
 				(mat3D[1] * x + mat3D[5] * y + mat3D[13]) / z

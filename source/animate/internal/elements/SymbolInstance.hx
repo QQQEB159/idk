@@ -25,12 +25,6 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 	public var symbolName(get, never):String;
 	public var transformationPoint:FlxPoint;
 
-	// 新增：Animate 实例名（IN 字段），IK 节点靠它识别
-	public var instanceName:Null<String>;
-
-	// 新增：是否 IK 节点（骨骼零件）
-	public var isIKNode:Bool = false;
-
 	var isColored:Bool;
 	var transform:ColorTransform;
 	var _transform:ColorTransform;
@@ -44,7 +38,6 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 			return;
 
 		this.libraryItem = parent.getSymbol(data.SN);
-		this.instanceName = data.IN; // 新增：接收实例名
 		this.matrix = data.MX.toMatrix();
 		this.firstFrame = data.FF;
 		this.isColored = false;
@@ -55,12 +48,6 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 			case "SF" | "singleframe": LoopType.SINGLE_FRAME;
 			default: LoopType.LOOP;
 		}
-
-		// 核心修复：IK 节点是静态零件，姿态由父时间轴驱动，导出器不标 SF 时
-		// 会跟着父级帧号在自身上循环，结果就是每个零件各播各的（错位）
-		this.isIKNode = isIKSymbol(data);
-		if (this.isIKNode)
-			this.loopType = LoopType.SINGLE_FRAME;
 
 		var trp:Null<TransformationPointJson> = data.TRP;
 		this.transformationPoint = FlxPoint.get(trp?.x ?? 0.0, trp?.y ?? 0.0);
@@ -103,45 +90,6 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 	}
 
 	/**
-	 * 新增：判断一个元件实例是否为 Adobe Animate 导出的 IK 节点 / 骨骼。
-	 * 导出器不同版本信息落在不同字段上，所以 IN → ST → SN 三重兜底。
-	 * @param data 	The symbol instance json data.
-	 * @return		Whether the instance is an IK node or not.
-	 */
-	public static function isIKSymbol(data:SymbolInstanceJson):Bool
-	{
-		if (data == null)
-			return false;
-
-		final name:Null<String> = data.IN;
-		if (name != null && name.length > 0)
-		{
-			final lowerName = name.toLowerCase();
-			if (lowerName.indexOf("iknode") == 0 || lowerName.indexOf("ik_node") == 0 || lowerName.indexOf("ik node") == 0
-				|| lowerName.indexOf("ikbone") == 0)
-				return true;
-		}
-
-		final type:Null<String> = data.ST;
-		if (type != null)
-		{
-			final lowerType = type.toLowerCase();
-			if (lowerType == "ik" || lowerType == "iknode" || lowerType == "ik_node" || lowerType == "ikbone")
-				return true;
-		}
-
-		final symbol:Null<String> = data.SN;
-		if (symbol != null)
-		{
-			final lowerSymbol = symbol.toLowerCase();
-			if (lowerSymbol.indexOf("iknode") != -1 || lowerSymbol.indexOf("ik_node") != -1 || lowerSymbol.indexOf("ik node") != -1)
-				return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Returns the timeline frame index needed to be rendered at a specific frame, while taking loop types into consideration.
 	 * @param index 		Index of the timeline to render.
 	 * @param frameIndex 	Optional, relative frame index of the current keyframe the symbol instance is stored at.
@@ -149,15 +97,7 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 	 */
 	public function getFrameIndex(index:Int, frameIndex:Int = 0):Int
 	{
-		// 新增：symbol 缺失时兜底，避免 libraryItem.timeline 空引用
-		if (libraryItem == null || libraryItem.timeline == null)
-			return firstFrame;
-
-		// 新增：IK 节点永远渲染首帧
-		if (isIKNode)
-			return firstFrame;
-
-		var frameIndex = firstFrame + (index - frameIndex);
+		var frameIndex = firstFrame + index;
 		var frameCount = libraryItem.timeline.frameCount;
 
 		switch (loopType)
