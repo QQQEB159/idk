@@ -725,8 +725,8 @@ abstract MatrixJson(Array<Float>) from Array<Float>
 			var y = p[1];
 			var z = mat3D[3] * x + mat3D[7] * y + mat3D[15];
 			transformed.push([
-				(mat3D[0] * x + mat3D[4] * y + mat3D[12]) / z,
-				(mat3D[1] * x + mat3D[5] * y + mat3D[13]) / z
+				mat3D[0] * x + mat3D[4] * y + mat3D[12] / z,
+				mat3D[1] * x + mat3D[5] * y + mat3D[13] / z
 			]);
 		}
 

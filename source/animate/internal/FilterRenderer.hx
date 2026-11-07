@@ -64,6 +64,12 @@ class FilterRenderer
 			return null;
 
 		var maskerFrame = masker.getFrameAtIndex(currentFrame);
+		
+		if (maskerFrame == null && masker.frameCount > 0)
+		{
+			maskerFrame = masker.getFrameAtIndex(currentFrame % masker.frameCount);
+		}
+		
 		if (maskerFrame == null || maskerFrame.elements.length <= 0)
 			return null;
 

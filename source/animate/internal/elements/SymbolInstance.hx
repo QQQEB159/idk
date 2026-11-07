@@ -97,7 +97,7 @@ class SymbolInstance extends AnimateElement<SymbolInstanceJson>
 	 */
 	public function getFrameIndex(index:Int, frameIndex:Int = 0):Int
 	{
-		var frameIndex = firstFrame + index;
+		var frameIndex = firstFrame + (index - frameIndex);
 		var frameCount = libraryItem.timeline.frameCount;
 
 		switch (loopType)

@@ -309,7 +309,7 @@ class Frame implements IFlxDestroyable
 		if (_bakedFrames[frameIndex] != null)
 			return;
 
-		var bakedFrame:Null<AtlasInstance> = FilterRenderer.maskFrame(this, frameIndex, layer);
+		var bakedFrame:Null<AtlasInstance> = FilterRenderer.maskFrame(this, frameIndex + this.index, layer);
 		if (bakedFrame == null)
 			return;
 
