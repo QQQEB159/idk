@@ -5,7 +5,7 @@
 		title="Holy Quintet" main="funkin.backend.system.Main"
 		file="HolyQuintet" packageName="com.funny.holyquintet"
 		package="com.funny.holyquintet"
-		version="1.0.5" company="Yoshman29" />
+		version="1.0.7" company="Yoshman29" />
 
 	<!--
 		CHANGE THE SAVE PATH & NAME FOR YOUR MOD HERE!

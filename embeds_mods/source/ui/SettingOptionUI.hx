@@ -169,6 +169,7 @@ class SettingOptionUI extends FlxBasic
 				currentValue = FlxMath.bound(currentValue + change, data.lowerLimit, data.upperLimit);
 			case 'float':
 				currentValue = FlxMath.bound(currentValue + change, data.lowerLimit, data.upperLimit);
+				currentValue = FlxMath.roundDecimal(currentValue, 1);
 			case 'language':
 				currentValue = data.defaultValue;
 		}
