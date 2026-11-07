@@ -387,7 +387,7 @@ function create()
 		menu_Button.ID = i;
 		menu_Button.text = i18n.tr('Settings/Catas/${mainOptions[i]}');
 
-		menu_Button.group.y += 65;
+		menu_Button.group.y += 95;
 
 		add(menu_Button);
 		mainOptionButtons.push(menu_Button);
